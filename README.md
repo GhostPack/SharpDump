@@ -2,7 +2,7 @@
 
 ----
 
-SharpDump is a C# port of [PowerSploit's Out-Minidump.ps1] (https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Out-Minidump.ps1) functionality. The [MiniDumpWriteDump](https://docs.microsoft.com/en-us/windows/desktop/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump) Win32 API call is used to create a minidump for the process ID specified (LSASS by default) to C:\Windows\Temp\debug<PID>.out, GZipStream is used to compress the dump to C:\Windows\Temp\debug<PD>.bin (.gz format), and the original minidump file is deleted.
+SharpDump is a C# port of [PowerSploit's Out-Minidump.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Out-Minidump.ps1) functionality. The [MiniDumpWriteDump](https://docs.microsoft.com/en-us/windows/desktop/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump) Win32 API call is used to create a minidump for the process ID specified (LSASS by default) to C:\Windows\Temp\debug<PID>.out, GZipStream is used to compress the dump to C:\Windows\Temp\debug<PD>.bin (.gz format), and the original minidump file is deleted.
 
 [@harmj0y](https://twitter.com/harmj0y) is the primary author of this port.
 
@@ -43,4 +43,4 @@ Dump a specific process ID:
 
 We are not planning on releasing binaries for SharpDump, so you will have to compile yourself :)
 
-SharpDump has been built against .NET 3.5 and is compatible with [Visual Studio 2015 Community Edition] (https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409). Simply open up the project .sln, choose "release", and build.
+SharpDump has been built against .NET 3.5 and is compatible with [Visual Studio 2015 Community Edition](https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409). Simply open up the project .sln, choose "release", and build.
