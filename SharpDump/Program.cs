@@ -73,6 +73,12 @@ namespace SharpDump
                 }
             }
 
+            if (targetProcess.ProcessName == "lsass" && !IsHighIntegrity())
+            {
+                Console.WriteLine("\n[X] Not in high integrity, unable to MiniDump!\n");
+                return;
+            }
+
             try
             {
                 targetProcessId = (uint)targetProcess.Id;
@@ -131,42 +137,35 @@ namespace SharpDump
 
         static void Main(string[] args)
         {
-            if (!IsHighIntegrity())
+            string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
+            string dumpDir = String.Format("{0}\\Temp\\", systemRoot);
+            if (!Directory.Exists(dumpDir))
             {
-                Console.WriteLine("\n[X] Not in high integrity, unable to MiniDump!\n");
+                Console.WriteLine(String.Format("\n[X] Dump directory \"{0}\" doesn't exist!\n", dumpDir));
+                return;
             }
-            else
-            {
-                string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
-                string dumpDir = String.Format("{0}\\Temp\\", systemRoot);
-                if (!Directory.Exists(dumpDir))
-                {
-                    Console.WriteLine(String.Format("\n[X] Dump directory \"{0}\" doesn't exist!\n", dumpDir));
-                    return;
-                }
 
-                if (args.Length ==0)
+            if (args.Length ==0)
+            {
+                // dump LSASS by default
+                Minidump();
+            }
+            else if (args.Length == 1)
+            {
+                int retNum;
+                if (int.TryParse(Convert.ToString(args[0]), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum))
                 {
-                    // dump LSASS by default
-                    Minidump();
+                    // arg is a number, so we're specifying a PID
+                    Minidump(retNum);
                 }
-                else if (args.Length == 1)
-                {
-                    int retNum;
-                    if (int.TryParse(Convert.ToString(args[0]), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum))
-                    {
-                        // arg is a number, so we're specifying a PID
-                        Minidump(retNum);
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nPlease use \"SharpDump.exe [pid]\" format\n");
-                    }
-                }
-                else if (args.Length == 2)
+                else
                 {
                     Console.WriteLine("\nPlease use \"SharpDump.exe [pid]\" format\n");
                 }
+            }
+            else if (args.Length == 2)
+            {
+                Console.WriteLine("\nPlease use \"SharpDump.exe [pid]\" format\n");
             }
         }
     }
